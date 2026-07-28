@@ -22,17 +22,35 @@ export const globalErrorHandler = (
             const target = (err.meta?.target as string[])?.join(", ");
             message = target
                 ? `Unique constraint failed on field: ${target}`
-                : "Unique constraint failed";
+                : "A record with this value already exists";
         } else if (err.code === "P2025") {
             statusCode = httpStatus.NOT_FOUND;
             message = (err.meta?.cause as string) || "Record not found";
         } else if (err.code === "P2003") {
             statusCode = httpStatus.BAD_REQUEST;
             message = "Foreign key constraint failed";
+        } else if (err.code === "P2021") {
+            statusCode = httpStatus.INTERNAL_SERVER_ERROR;
+            message = "The requested table does not exist in the database";
+        } else if (err.meta?.driverAdapterError) {
+            statusCode = httpStatus.INTERNAL_SERVER_ERROR;
+            const adapterCause = (err.meta.driverAdapterError as any)?.cause;
+            message = adapterCause?.originalMessage || adapterCause?.message || "Database driver error occurred";
         } else {
             statusCode = httpStatus.BAD_REQUEST;
-            message = err.message;
+            const lines = err.message?.split("\n").map((l: string) => l.trim()).filter(Boolean);
+            const cleanLine = lines?.[lines.length - 1] || err.message;
+            message = cleanLine.replace(/^Database error\.\s*/i, "");
         }
+    } else if (err instanceof Prisma.PrismaClientInitializationError) {
+        statusCode = httpStatus.INTERNAL_SERVER_ERROR;
+        message = "Failed to connect to the database";
+    } else if (err instanceof Prisma.PrismaClientUnknownRequestError) {
+        statusCode = httpStatus.INTERNAL_SERVER_ERROR;
+        message = "An unknown database error occurred";
+    } else if (err.message && err.message.includes("\n")) {
+        const lines = err.message.split("\n").map((l: string) => l.trim()).filter(Boolean);
+        message = lines[lines.length - 1] || err.message;
     }
 
     console.log(err);
