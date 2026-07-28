@@ -7,6 +7,12 @@ const config = {
   PORT: env.PORT || 5000,
   DATABASE_URL:
     env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/gearup",
+  APP_URL: env.APP_URL || "http://localhost:5000",
+  BCRYPT_SALT_ROUNDS: env.BCRYPT_SALT_ROUNDS || 10,
+  JWT_ACCESS_SECRET: env.JWT_ACCESS_SECRET,
+  JWT_REFRESH_SECRET: env.JWT_REFRESH_SECRET,
+  JWT_ACCESS_EXPIRES_IN: env.JWT_ACCESS_EXPIRES_IN,
+  JWT_REFRESH_EXPIRES_IN: env.JWT_REFRESH_EXPIRES_IN,
 };
 
 export default config;

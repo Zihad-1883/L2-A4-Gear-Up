@@ -5,9 +5,9 @@ import { prisma } from "./lib/prisma";
 const port = config.PORT;
 
 async function main() {
-  await prisma.$connect();
-  console.log("Database Connected Successfully");
   try {
+    await prisma.$connect();
+    console.log("Database Connected Successfully");
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });

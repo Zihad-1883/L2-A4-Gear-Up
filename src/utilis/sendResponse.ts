@@ -12,7 +12,7 @@ interface IResponseData<T> {
     statusCode: number;
     message: string;
     data: T;
-    meta: IMetaData
+    meta?: IMetaData
 }
 
 export const sendResponse = <T>(res: Response, data: IResponseData<T>) => {

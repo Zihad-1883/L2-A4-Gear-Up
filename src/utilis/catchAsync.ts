@@ -6,7 +6,11 @@ const catchAsync = (fn: RequestHandler) => {
     try {
       await fn(req, res, next)
     } catch (error) {
-      next(error)
+      res.json({
+        success: false,
+        message: "Something went wrong",
+        error: error
+      })
     }
   };
 };
