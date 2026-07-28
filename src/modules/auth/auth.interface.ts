@@ -4,3 +4,8 @@ export interface IRegisterUserPayload {
     password: string;
     role: "CUSTOMER" | "PROVIDER" | "ADMIN";
 }
+
+export interface ILoginUserPayload {
+    email: string;
+    password: string;
+}
