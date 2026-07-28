@@ -2,8 +2,9 @@ import bcrypt from "bcryptjs"
 import type { ILoginUserPayload, IRegisterUserPayload } from "./auth.interface"
 import { prisma } from "../../lib/prisma"
 import config from "../../config"
-import jwt, { type SignOptions } from "jsonwebtoken"
-import { createToken } from "../../utilis/jwtToken"
+import jwt, { type JwtPayload, type SignOptions } from "jsonwebtoken"
+import { createToken, verifyToken } from "../../utilis/jwtToken"
+import { verify } from "node:crypto"
 
 const registerUserIntoDB = async (payload: IRegisterUserPayload) => {
     const { name, email, password, role } = payload
@@ -86,7 +87,46 @@ const loginUserIntoDB = async (payload: ILoginUserPayload) => {
     }
 }
 
+
+const refreshToken = async (token: string) => {
+    const verifiedToken = verifyToken(token, config.JWT_REFRESH_SECRET!);
+
+    if (!verifiedToken) {
+        throw new Error("Invalid Refresh Token")
+    }
+
+    const { id } = verifiedToken.data as JwtPayload
+
+    const user = await prisma.user.findUniqueOrThrow({
+        where: {
+            id
+        }
+    })
+
+    if (user.userStatus === "BLOCKED") {
+        throw new Error("User is blocked")
+    }
+
+    const jwtPayload = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+    };
+
+    const accessToken = createToken(
+        jwtPayload,
+        config.JWT_ACCESS_SECRET!,
+        { expiresIn: config.JWT_ACCESS_EXPIRES_IN } as SignOptions
+    )
+
+    return {
+        accessToken
+    }
+}
+
 export const authService = {
     registerUserIntoDB,
-    loginUserIntoDB
+    loginUserIntoDB,
+    refreshToken
 }
