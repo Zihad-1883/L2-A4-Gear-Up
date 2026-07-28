@@ -1,20 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
 import catchAsync from "../../utilis/catchAsync";
 import { authService } from "./auth.service";
-import { sendResponse } from "../../utilis/sendResponse"; // or { sendResponse } depending on your export
+import { sendResponse } from "../../utilis/sendResponse";
 import httpStatus from "http-status";
-
-const registerUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const payload = req.body;
-    const result = await authService.registerUserIntoDB(payload);
-
-    sendResponse(res, {
-        statusCode: httpStatus.CREATED,
-        success: true,
-        message: "User registered successfully",
-        data: result,
-    });
-});
 
 const loginUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body
@@ -63,7 +51,6 @@ const refreshToken = catchAsync(async (req: Request, res: Response, next: NextFu
 })
 
 export const authController = {
-    registerUser,
     loginUser,
     refreshToken
 };
