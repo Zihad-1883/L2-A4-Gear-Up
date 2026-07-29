@@ -3,7 +3,7 @@ import catchAsync from "../../utilis/catchAsync";
 import { userService } from "./user.service";
 import { sendResponse } from "../../utilis/sendResponse";
 import httpStatus from "http-status";
-import type { JwtPayload } from "jsonwebtoken";
+import type { IUser, IUserStatus } from "./user.interface";
 
 const registerUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
@@ -28,7 +28,31 @@ const getMyProfile = catchAsync(async (req: Request, res: Response, next: NextFu
     });
 });
 
+const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const result = await userService.getAllUsersFromDB();
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Users fetched successfully",
+        data: result,
+    });
+});
+
+const updateUserStatus = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req.params as { userId: string };
+    const payload = req.body.userStatus as IUserStatus;
+    const result = await userService.updateUserStatusInDB(userId, payload);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "User status updated successfully",
+        data: result,
+    });
+});
+
 export const userController = {
     registerUser,
-    getMyProfile
+    getMyProfile,
+    getAllUsers,
+    updateUserStatus
 };
