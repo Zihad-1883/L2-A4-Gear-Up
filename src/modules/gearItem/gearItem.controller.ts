@@ -17,12 +17,20 @@ const createGearItem = catchAsync(async (req: Request, res: Response, next: Next
 })
 
 const getAllGearItems = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const result = await gearItemService.getAllGearItemsFromDB();
+    const query = req.query;
+    // const { page, limit } = query
+    const data = await gearItemService.getAllGearItemsFromDB(query);
+    // console.log(result.length)
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
         message: "Gear Items fetched successfully",
-        data: result
+        data: data.result,
+        meta: {
+            page: Number(data.page),
+            limit: Number(data.limit),
+            total: Number(data.total)
+        }
     })
 })
 
