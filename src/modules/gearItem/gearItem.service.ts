@@ -114,7 +114,18 @@ const getSingleGearItemFromDB = async (gearId: string) => {
     return result;
 }
 
-const updateGearItemInDB = async (payload: Partial<IGearItem>, gearId: string) => {
+const updateGearItemInDB = async (payload: Partial<IGearItem>, gearId: string, userId: string) => {
+
+    const gearItem = await prisma.gearItem.findUniqueOrThrow({
+        where: {
+            id: gearId
+        }
+    })
+
+    if (gearItem.userId !== userId) {
+        throw new Error("You are not authorized to update this gear item");
+    }
+
     const result = await prisma.gearItem.update({
         where: {
             id: gearId,
