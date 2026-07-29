@@ -30,6 +30,8 @@ app.use("/api/categories", categoryRouter);
 app.use("/api/provider/gear", geatItemRouter.providerRouter);
 app.use("/api/gear", geatItemRouter.gearRouter);
 app.use("/api/admin", userRouter.adminRouter);
+app.use("/api/rentals", rentalRouter.rentalOrderAdminRouter);
+app.use("/api/admin", rentalRouter.rentalOrderAdminRouter);
 app.use("/api/rentals", rentalRouter.rentalOrderRouter);
 app.use("/api/provider", rentalRouter.rentalOrderProviderRouter);
 

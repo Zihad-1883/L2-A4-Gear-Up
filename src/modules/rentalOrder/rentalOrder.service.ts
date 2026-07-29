@@ -128,11 +128,17 @@ const updateProvidersRentalOrderStatusFromDB = async (providerId: string, orderI
     return result;
 }
 
+const getAllRentalOrdersFromDB = async () => {
+    const result = await prisma.rentalOrder.findMany();
+    return result;
+}
+
 export const rentalOrderService = {
     createRentalOrderIntoDB,
     getMyRentalOrdersFromDB,
     getSingleMyRentalOrdersFromDB,
     updateMyRentalOrderStatusFromDB,
     getProvidersAllRentalOrderFromDB,
-    updateProvidersRentalOrderStatusFromDB
+    updateProvidersRentalOrderStatusFromDB,
+    getAllRentalOrdersFromDB
 };

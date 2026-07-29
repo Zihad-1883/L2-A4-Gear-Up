@@ -101,11 +101,22 @@ const updateProvidersRentalOrderStatus = catchAsync(async (req: Request, res: Re
     })
 })
 
+const getAllRentalOrders = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const result = await rentalOrderService.getAllRentalOrdersFromDB();
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "All Rental Orders Fetched Successfully",
+        data: result
+    })
+})
+
 export const rentalOrderController = {
     createRentalOrder,
     getCustomersRentalOrders,
     getCustomersSingleRentalOrder,
     updateMyRentalOrderStatus,
     getProvidersAllRentalOrders,
-    updateProvidersRentalOrderStatus
+    updateProvidersRentalOrderStatus,
+    getAllRentalOrders
 }
