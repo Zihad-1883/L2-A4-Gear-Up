@@ -53,9 +53,19 @@ const updateGearItemInDB = async (payload: Partial<IGearItem>, gearId: string) =
     return result
 }
 
+const deleteGearItemFromDB = async (gearId: string) => {
+    const result = await prisma.gearItem.delete({
+        where: {
+            id: gearId
+        }
+    })
+    return null
+}
+
 export const gearItemService = {
     createGearItemInDB,
     getAllGearItemsFromDB,
     getSingleGearItemFromDB,
-    updateGearItemInDB
+    updateGearItemInDB,
+    deleteGearItemFromDB
 }

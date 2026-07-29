@@ -8,6 +8,7 @@ const gearRouter = Router()
 
 providerRouter.post("/", auth(Role.PROVIDER), gearItemController.createGearItem);
 providerRouter.patch("/:gearId", auth(Role.PROVIDER), gearItemController.updateGearItem);
+providerRouter.delete("/:gearId", auth(Role.PROVIDER), gearItemController.deleteGearItem);
 
 gearRouter.get("/", gearItemController.getAllGearItems);
 gearRouter.get("/:gearId", gearItemController.getSingleGearItem)
