@@ -31,7 +31,7 @@ app.use("/api/provider/gear", geatItemRouter.providerRouter);
 app.use("/api/gear", geatItemRouter.gearRouter);
 app.use("/api/admin", userRouter.adminRouter);
 app.use("/api/rentals", rentalRouter.rentalOrderRouter);
-// app.use("/api/provider/rentals", rentalRouter.rentalOrderProviderRouter);
+app.use("/api/provider", rentalRouter.rentalOrderProviderRouter);
 
 app.use(notFound);
 app.use(globalErrorHandler)

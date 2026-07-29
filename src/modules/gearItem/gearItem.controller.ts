@@ -49,7 +49,8 @@ const updateGearItem = catchAsync(async (req: Request, res: Response, next: Next
     const payload = req.body;
     const gearId = req.params.gearId as string;
     const userId = req.user?.id as string;
-    const result = await gearItemService.updateGearItemInDB(payload, gearId, userId!);
+
+    const result = await gearItemService.updateGearItemInDB(payload, gearId, userId);
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
@@ -59,8 +60,9 @@ const updateGearItem = catchAsync(async (req: Request, res: Response, next: Next
 })
 
 const deleteGearItem = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const gearId = req.params.gearId;
-    const result = await gearItemService.deleteGearItemFromDB(gearId as string);
+    const gearId = req.params.gearId as string;
+    const userId = req.user?.id as string
+    const result = await gearItemService.deleteGearItemFromDB(gearId, userId);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,

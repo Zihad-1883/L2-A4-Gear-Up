@@ -1,7 +1,7 @@
 import { prisma } from "../../lib/prisma"
 import type { IRentalOrderUserPayload, RentalOrderStatus } from "./rentalOrder.interface"
 
-const createRentalOrderIntoDB = async (payload: IRentalOrderUserPayload, userId: string) => {
+const createRentalOrderIntoDB = async (payload: IRentalOrderUserPayload, customerId: string) => {
     const { gearItemId, startDate, endDate } = payload;
 
     const start = new Date(startDate);
@@ -16,6 +16,8 @@ const createRentalOrderIntoDB = async (payload: IRentalOrderUserPayload, userId:
         const gearItem = await tx.gearItem.findUniqueOrThrow({
             where: { id: gearItemId },
         });
+
+        const providerId = gearItem.userId;
 
         if (gearItem.stock < 1) {
             throw new Error("Gear item is out of stock");
@@ -37,7 +39,8 @@ const createRentalOrderIntoDB = async (payload: IRentalOrderUserPayload, userId:
         return tx.rentalOrder.create({
             data: {
                 gearItemId,
-                userId,
+                customerId,
+                providerId,
                 rentalOrderStatus: "PENDING",
                 startDate: start,
                 endDate: end,
@@ -50,32 +53,63 @@ const createRentalOrderIntoDB = async (payload: IRentalOrderUserPayload, userId:
     return result;
 };
 
-const getMyRentalOrdersFromDB = async (userId: string) => {
+const getMyRentalOrdersFromDB = async (customerId: string) => {
     const result = await prisma.rentalOrder.findMany({
         where: {
-            userId
+            customerId
         }
     })
     return result;
 }
 
-const getSingleMyRentalOrdersFromDB = async (userId: string, orderId: string) => {
+const getSingleMyRentalOrdersFromDB = async (customerId: string, orderId: string) => {
     const result = await prisma.rentalOrder.findFirstOrThrow({
         where: {
             id: orderId,
-            userId
+            customerId
         }
     })
     return result;
 }
 
-const updateMyRentalOrderStatusFromDB = async (userId: string, orderId: string, payload: RentalOrderStatus) => {
-
+const updateMyRentalOrderStatusFromDB = async (customerId: string, orderId: string, payload: RentalOrderStatus) => {
 
     const rentalOrder = await prisma.rentalOrder.findFirstOrThrow({
         where: {
             id: orderId,
-            userId
+            customerId
+        }
+    });
+
+    if (!rentalOrder) {
+        throw new Error("Rental Order Not Found")
+    }
+
+    const result = await prisma.rentalOrder.update({
+        where: {
+            id: rentalOrder.id
+        },
+        data: {
+            rentalOrderStatus: payload
+        }
+    })
+    return result;
+}
+
+const getProvidersAllRentalOrderFromDB = async (providerId: string) => {
+    const result = await prisma.rentalOrder.findMany({
+        where: {
+            providerId
+        }
+    })
+    return result;
+}
+
+const updateProvidersRentalOrderStatusFromDB = async (providerId: string, orderId: string, payload: RentalOrderStatus) => {
+    const rentalOrder = await prisma.rentalOrder.findFirstOrThrow({
+        where: {
+            id: orderId,
+            providerId
         }
     });
 
@@ -98,5 +132,7 @@ export const rentalOrderService = {
     createRentalOrderIntoDB,
     getMyRentalOrdersFromDB,
     getSingleMyRentalOrdersFromDB,
-    updateMyRentalOrderStatusFromDB
+    updateMyRentalOrderStatusFromDB,
+    getProvidersAllRentalOrderFromDB,
+    updateProvidersRentalOrderStatusFromDB
 };

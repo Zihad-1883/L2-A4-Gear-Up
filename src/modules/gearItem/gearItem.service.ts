@@ -140,7 +140,18 @@ const updateGearItemInDB = async (payload: Partial<IGearItem>, gearId: string, u
     return result
 }
 
-const deleteGearItemFromDB = async (gearId: string) => {
+const deleteGearItemFromDB = async (gearId: string, userId: string) => {
+
+    const gearItem = await prisma.gearItem.findUniqueOrThrow({
+        where: {
+            id: gearId
+        }
+    });
+
+    if (gearItem.userId !== userId) {
+        throw new Error("You are not authorized to delete this gear item")
+    }
+
     const result = await prisma.gearItem.delete({
         where: {
             id: gearId

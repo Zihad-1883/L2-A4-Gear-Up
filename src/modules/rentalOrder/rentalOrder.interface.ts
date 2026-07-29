@@ -2,14 +2,14 @@ export type RentalOrderStatus = "PENDING" | "APPROVED" | "REJECTED" | "PAID" | "
 
 export interface IRentalOrderUserPayload {
     gearItemId: string;
-    gearItemPrice: number;
     startDate: Date;
     endDate: Date;
 }
 
 export interface IRentalOrder {
     gearItemId: string;
-    userId: string;
+    customerId: string;
+    providerId: string;
     rentalOrderStatus: RentalOrderStatus;
     startDate: Date;
     endDate: Date;
