@@ -10,6 +10,7 @@ import { notFound } from "./milddlewares/notFound";
 import { globalErrorHandler } from "./milddlewares/globalErrorHandler";
 import { categoryRouter } from "./modules/category/category.route";
 import { geatItemRouter } from "./modules/gearItem/gearItem.route";
+import { rentalRouter } from "./modules/rentalOrder/rentalOrder.route";
 
 const app: Application = express();
 app.use(express.json());
@@ -28,7 +29,9 @@ app.use("/api/auth", authRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/provider/gear", geatItemRouter.providerRouter);
 app.use("/api/gear", geatItemRouter.gearRouter);
-app.use("/api/admin", userRouter.adminRouter)
+app.use("/api/admin", userRouter.adminRouter);
+app.use("/api/rentals", rentalRouter.rentalOrderRouter);
+// app.use("/api/provider/rentals", rentalRouter.rentalOrderProviderRouter);
 
 app.use(notFound);
 app.use(globalErrorHandler)

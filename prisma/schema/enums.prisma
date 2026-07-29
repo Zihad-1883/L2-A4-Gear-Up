@@ -14,7 +14,6 @@ enum RentalOrderStatus {
     APPROVED
     REJECTED
     PAID
-    PICKED_UP
     RETURNED
     CANCELLED
 }

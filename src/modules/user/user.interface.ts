@@ -13,3 +13,4 @@ export interface IUser {
     userStatus: "ACTIVE" | "BLOCKED";
 }
 
+export type IUserStatus = "ACTIVE" | "BLOCKED";

@@ -8,8 +8,8 @@ model Payment {
     amount Decimal @db.Decimal(10, 2)
     method String
 
-    provider PaymentProvider @default(SSLCOMMERZ)
-    status   PaymentStatus   @default(PENDING)
+    provider      PaymentProvider @default(SSLCOMMERZ)
+    paymentStatus PaymentStatus   @default(PENDING)
 
     createdAt DateTime  @default(now())
     paidAt    DateTime?
