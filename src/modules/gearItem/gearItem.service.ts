@@ -17,4 +17,32 @@ const createGearItemInDB = async (payload: IGearItem, userId: string) => {
     return result
 }
 
-export const gearItemService = { createGearItemInDB }
+const getAllGearItemsFromDB = async () => {
+    const result = await prisma.gearItem.findMany({
+        include: {
+            category: true
+        }
+    })
+    return result
+}
+
+const updateGearItemInDB = async (payload: Partial<IGearItem>, gearId: string) => {
+    const result = await prisma.gearItem.update({
+        where: {
+            id: gearId,
+        },
+        data: {
+            ...payload
+        },
+        include: {
+            category: true,
+        },
+    })
+    return result
+}
+
+export const gearItemService = {
+    createGearItemInDB,
+    getAllGearItemsFromDB,
+    updateGearItemInDB
+}
