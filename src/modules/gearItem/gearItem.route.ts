@@ -1,5 +1,12 @@
 import { Router } from "express";
+import { gearItemController } from "./gearItem.controller";
+import { auth } from "../../milddlewares/auth";
+import { Role } from "../../../prisma/src/generated/prisma/enums";
 
-const router = Router();
+const providerRouter = Router();
 
-export const geatItemRouter = router
+providerRouter.post("/", auth(Role.PROVIDER), gearItemController.createGearItem)
+
+
+
+export const geatItemRouter = { providerRouter }

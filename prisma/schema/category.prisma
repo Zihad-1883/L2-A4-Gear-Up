@@ -3,5 +3,5 @@ model Category {
     name        String  @unique
     description String?
 
-    gearId GearItem[]
+    gearItems GearItem[]
 }

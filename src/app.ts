@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 import { notFound } from "./milddlewares/notFound";
 import { globalErrorHandler } from "./milddlewares/globalErrorHandler";
 import { categoryRouter } from "./modules/category/category.route";
+import { geatItemRouter } from "./modules/gearItem/gearItem.route";
 
 const app: Application = express();
 app.use(express.json());
@@ -24,7 +25,8 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
-app.use("/api/categories", categoryRouter)
+app.use("/api/categories", categoryRouter);
+app.use("/api/provider/gear", geatItemRouter.providerRouter)
 
 app.use(notFound);
 app.use(globalErrorHandler)

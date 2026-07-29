@@ -8,3 +8,23 @@ enum UserStatus {
     ACTIVE
     BLOCKED
 }
+
+enum RentalOrderStatus {
+    PENDING
+    APPROVED
+    REJECTED
+    PAID
+    PICKED_UP
+    RETURNED
+    CANCELLED
+}
+
+enum PaymentStatus {
+    PENDING
+    COMPLETED
+    FAILED
+}
+
+enum PaymentProvider {
+    SSLCOMMERZ
+}

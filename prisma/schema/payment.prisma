@@ -1,0 +1,18 @@
+model Payment {
+    id            String @id @default(uuid())
+    transactionId String @unique
+
+    rentalOrder   RentalOrder @relation(fields: [rentalOrderId], references: [id])
+    rentalOrderId String
+
+    amount Decimal @db.Decimal(10, 2)
+    method String
+
+    provider PaymentProvider @default(SSLCOMMERZ)
+    status   PaymentStatus   @default(PENDING)
+
+    createdAt DateTime  @default(now())
+    paidAt    DateTime?
+
+    @@index([rentalOrderId])
+}
