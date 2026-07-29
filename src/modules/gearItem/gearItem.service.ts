@@ -23,7 +23,19 @@ const getAllGearItemsFromDB = async () => {
             category: true
         }
     })
-    return result
+    return result;
+}
+
+const getSingleGearItemFromDB = async (gearId: string) => {
+    const result = await prisma.gearItem.findUniqueOrThrow({
+        where: {
+            id: gearId
+        },
+        include: {
+            category: true
+        }
+    })
+    return result;
 }
 
 const updateGearItemInDB = async (payload: Partial<IGearItem>, gearId: string) => {
@@ -44,5 +56,6 @@ const updateGearItemInDB = async (payload: Partial<IGearItem>, gearId: string) =
 export const gearItemService = {
     createGearItemInDB,
     getAllGearItemsFromDB,
+    getSingleGearItemFromDB,
     updateGearItemInDB
 }

@@ -16,6 +16,27 @@ const createGearItem = catchAsync(async (req: Request, res: Response, next: Next
     })
 })
 
+const getAllGearItems = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const result = await gearItemService.getAllGearItemsFromDB();
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Gear Items fetched successfully",
+        data: result
+    })
+})
+
+const getSingleGearItem = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const gearId = req.params.gearId;
+    const result = await gearItemService.getSingleGearItemFromDB(gearId as string);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Gear Item fetched successfully",
+        data: result
+    })
+})
+
 const updateGearItem = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
     const gearId = req.params.gearId;
@@ -28,7 +49,11 @@ const updateGearItem = catchAsync(async (req: Request, res: Response, next: Next
     })
 })
 
+
 export const gearItemController = {
     createGearItem,
-    updateGearItem
+    getAllGearItems,
+    getSingleGearItem,
+    updateGearItem,
 }
+
