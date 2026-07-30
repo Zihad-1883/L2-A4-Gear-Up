@@ -29,12 +29,21 @@ try {
 
 const pool = new pg.Pool({
   connectionString,
+  max: 10,
+  idleTimeoutMillis: 15000,
+  connectionTimeoutMillis: 10000,
+  keepAlive: true,
+  keepAliveInitialDelayMillis: 10000,
   ssl: isLocalhost
     ? false
     : {
         rejectUnauthorized: false,
         servername: dbHost || undefined,
       },
+});
+
+pool.on("error", (err) => {
+  console.error("[pg.Pool Error] Idle client error:", err.message);
 });
 
 const adapter = new PrismaPg(pool);
