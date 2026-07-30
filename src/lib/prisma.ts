@@ -18,9 +18,23 @@ if (!process.env.DATABASE_URL) {
 
 const isLocalhost = connectionString?.includes("localhost") || connectionString?.includes("127.0.0.1");
 
+let dbHost = "";
+try {
+  if (connectionString) {
+    dbHost = new URL(connectionString).hostname;
+  }
+} catch (e) {
+  // Ignore URL parse error if malformed
+}
+
 const pool = new pg.Pool({
   connectionString,
-  ssl: isLocalhost ? false : { rejectUnauthorized: false },
+  ssl: isLocalhost
+    ? false
+    : {
+        rejectUnauthorized: false,
+        servername: dbHost || undefined,
+      },
 });
 
 const adapter = new PrismaPg(pool);
