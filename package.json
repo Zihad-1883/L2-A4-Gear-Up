@@ -2,11 +2,11 @@
   "name": "gearup",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/server.js",
+  "main": "dist/server.cjs",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "npm install && npx prisma generate && tsup src/server.ts --format esm --clean",
-    "start": "node dist/server.js",
+    "build": "npx prisma generate && tsup",
+    "start": "node dist/server.cjs",
     "postinstall": "npx prisma generate"
   },
   "keywords": [],

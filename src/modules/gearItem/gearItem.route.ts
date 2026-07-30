@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { gearItemController } from "./gearItem.controller";
 import { auth } from "../../milddlewares/auth";
-import { Role } from "../../../prisma/src/generated/prisma/enums";
+import { Role } from "../../lib/prisma";
 
 import { reviewController } from "../review/review.controller";
 
