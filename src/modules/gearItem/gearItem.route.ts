@@ -3,6 +3,8 @@ import { gearItemController } from "./gearItem.controller";
 import { auth } from "../../milddlewares/auth";
 import { Role } from "../../../prisma/src/generated/prisma/enums";
 
+import { reviewController } from "../review/review.controller";
+
 const providerRouter = Router();
 const gearRouter = Router()
 
@@ -11,7 +13,8 @@ providerRouter.patch("/:gearId", auth(Role.PROVIDER), gearItemController.updateG
 providerRouter.delete("/:gearId", auth(Role.PROVIDER), gearItemController.deleteGearItem);
 
 gearRouter.get("/", gearItemController.getAllGearItems);
-gearRouter.get("/:gearId", gearItemController.getSingleGearItem)
+gearRouter.get("/:gearId", gearItemController.getSingleGearItem);
+gearRouter.get("/:gearId/reviews", reviewController.getReviewsForGear);
 
 
 

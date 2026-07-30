@@ -1,10 +1,10 @@
 model Review {
     id String @id @default(uuid())
 
-    user   User   @relation(fields: [userId], references: [id])
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
 
-    gearItem   GearItem @relation(fields: [gearItemId], references: [id])
+    gearItem   GearItem @relation(fields: [gearItemId], references: [id], onDelete: Cascade)
     gearItemId String
 
     rating  Int

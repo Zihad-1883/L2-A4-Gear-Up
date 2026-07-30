@@ -2,7 +2,7 @@ model Payment {
     id            String @id @default(uuid())
     transactionId String @unique
 
-    rentalOrder   RentalOrder @relation(fields: [rentalOrderId], references: [id])
+    rentalOrder   RentalOrder @relation(fields: [rentalOrderId], references: [id], onDelete: Cascade)
     rentalOrderId String
 
     amount Decimal @db.Decimal(10, 2)

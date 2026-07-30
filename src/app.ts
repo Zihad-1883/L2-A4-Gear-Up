@@ -11,9 +11,12 @@ import { globalErrorHandler } from "./milddlewares/globalErrorHandler";
 import { categoryRouter } from "./modules/category/category.route";
 import { geatItemRouter } from "./modules/gearItem/gearItem.route";
 import { rentalRouter } from "./modules/rentalOrder/rentalOrder.route";
+import { paymentsRouter } from "./modules/payments/payments.route";
+import { reviewRouter } from "./modules/review/review.route";
 
 const app: Application = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
 
 app.get("/", (req: Request, res: Response) => {
@@ -34,6 +37,8 @@ app.use("/api/rentals", rentalRouter.rentalOrderAdminRouter);
 app.use("/api/admin", rentalRouter.rentalOrderAdminRouter);
 app.use("/api/rentals", rentalRouter.rentalOrderRouter);
 app.use("/api/provider", rentalRouter.rentalOrderProviderRouter);
+app.use("/api/payments", paymentsRouter);
+app.use("/api/reviews", reviewRouter);
 
 app.use(notFound);
 app.use(globalErrorHandler)

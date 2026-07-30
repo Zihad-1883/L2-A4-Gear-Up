@@ -117,6 +117,23 @@ const updateProvidersRentalOrderStatusFromDB = async (providerId: string, orderI
         throw new Error("Rental Order Not Found")
     }
 
+    // If order status changes to RETURNED, increment stock back
+    if (payload === "RETURNED" && rentalOrder.rentalOrderStatus !== "RETURNED") {
+        return await prisma.$transaction(async (tx) => {
+            const updatedOrder = await tx.rentalOrder.update({
+                where: { id: rentalOrder.id },
+                data: { rentalOrderStatus: payload },
+            });
+
+            await tx.gearItem.update({
+                where: { id: rentalOrder.gearItemId },
+                data: { stock: { increment: 1 } },
+            });
+
+            return updatedOrder;
+        });
+    }
+
     const result = await prisma.rentalOrder.update({
         where: {
             id: rentalOrder.id

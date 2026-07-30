@@ -6,10 +6,10 @@ model GearItem {
     price       Decimal @db.Decimal(10, 2)
     stock       Int     @default(0)
 
-    user   User   @relation(fields: [userId], references: [id])
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
 
-    category   Category @relation(fields: [categoryId], references: [id])
+    category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
     categoryId String
 
     createdAt DateTime @default(now())
