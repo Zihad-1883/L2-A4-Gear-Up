@@ -6,6 +6,7 @@ import express, {
 import { authRouter } from "./modules/auth/auth.route";
 import { userRouter } from "./modules/user/user.route";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import { notFound } from "./milddlewares/notFound";
 import { globalErrorHandler } from "./milddlewares/globalErrorHandler";
 import { categoryRouter } from "./modules/category/category.route";
@@ -15,6 +16,10 @@ import { paymentsRouter } from "./modules/payments/payments.route";
 import { reviewRouter } from "./modules/review/review.route";
 
 const app: Application = express();
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
