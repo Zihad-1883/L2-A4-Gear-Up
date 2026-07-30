@@ -17,11 +17,10 @@ const isLocalhost = connectionString?.includes("localhost") || connectionString?
 const pool = new pg.Pool({
   connectionString,
   ssl: isLocalhost ? false : { rejectUnauthorized: false },
+  family: 4,
 });
 
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 export { prisma, Prisma };
-
-
