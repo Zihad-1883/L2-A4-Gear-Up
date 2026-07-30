@@ -1,8 +1,12 @@
 import "dotenv/config";
+import dns from "node:dns";
 import pg from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient, Prisma } from "../../prisma/src/generated/prisma/client";
 import config from "../config";
+
+// Force Node.js to use IPv4 first for DNS lookup (prevents ECONNREFUSED on cloud providers like Render that do not support outbound IPv6)
+dns.setDefaultResultOrder("ipv4first");
 
 const connectionString = process.env.DATABASE_URL || config.DATABASE_URL;
 const maskedUrl = connectionString ? connectionString.replace(/:([^@]+)@/, ":****@") : "NONE";
@@ -17,10 +21,10 @@ const isLocalhost = connectionString?.includes("localhost") || connectionString?
 const pool = new pg.Pool({
   connectionString,
   ssl: isLocalhost ? false : { rejectUnauthorized: false },
-  family: 4,
 });
 
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 export { prisma, Prisma };
+
