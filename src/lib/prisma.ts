@@ -1,8 +1,16 @@
 import "dotenv/config";
+import dns from "node:dns";
 import pg from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient, Prisma, Role } from "../../prisma/src/generated/prisma/index.js";
 import config from "../config";
+
+// Force IPv4 first DNS resolution for Node network sockets on cloud providers like Render
+try {
+  dns.setDefaultResultOrder("ipv4first");
+} catch (e) {
+  // Ignore if unsupported in environment
+}
 
 const connectionString = process.env.DATABASE_URL || config.DATABASE_URL;
 const maskedUrl = connectionString ? connectionString.replace(/:([^@]+)@/, ":****@") : "NONE";
