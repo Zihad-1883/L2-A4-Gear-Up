@@ -117,8 +117,17 @@ const updateProvidersRentalOrderStatusFromDB = async (providerId: string, orderI
         throw new Error("Rental Order Not Found")
     }
 
+    // Enforce valid status transitions
+    const currentStatus = rentalOrder.rentalOrderStatus;
+    if (payload === "PICKED_UP" && currentStatus !== "PAID") {
+        throw new Error("Order can only be marked as PICKED_UP after the customer has PAID");
+    }
+    if (payload === "RETURNED" && currentStatus !== "PICKED_UP") {
+        throw new Error("Order can only be marked as RETURNED after the gear has been PICKED_UP");
+    }
+
     // If order status changes to RETURNED, increment stock back
-    if (payload === "RETURNED" && rentalOrder.rentalOrderStatus !== "RETURNED") {
+    if (payload === "RETURNED") {
         return await prisma.$transaction(async (tx) => {
             const updatedOrder = await tx.rentalOrder.update({
                 where: { id: rentalOrder.id },

@@ -87,8 +87,8 @@ const updateProvidersRentalOrderStatus = catchAsync(async (req: Request, res: Re
         throw new Error("Rental Order Status is required");
     }
 
-    if (status !== "APPROVED" && status !== "REJECTED" && status !== "RETURNED") {
-        throw new Error("Providers are only allowed to approve or reject their rental order");
+    if (status !== "APPROVED" && status !== "REJECTED" && status !== "PICKED_UP" && status !== "RETURNED") {
+        throw new Error("Providers can only set status to: APPROVED, REJECTED, PICKED_UP, or RETURNED");
     }
 
 

@@ -1,4 +1,4 @@
-export type RentalOrderStatus = "PENDING" | "APPROVED" | "REJECTED" | "PAID" | "RETURNED" | "CANCELLED"
+export type RentalOrderStatus = "PENDING" | "APPROVED" | "REJECTED" | "PAID" | "PICKED_UP" | "RETURNED" | "CANCELLED"
 
 export interface IRentalOrderUserPayload {
     gearItemId: string;
