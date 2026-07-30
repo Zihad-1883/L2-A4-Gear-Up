@@ -5,9 +5,12 @@
   "main": "dist/server.cjs",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "npx prisma generate && tsup",
+    "build": "npx prisma generate --schema=prisma/schema && tsup",
     "start": "node dist/server.cjs",
-    "postinstall": "npx prisma generate"
+    "postinstall": "npx prisma generate --schema=prisma/schema"
+  },
+  "prisma": {
+    "schema": "prisma/schema"
   },
   "keywords": [],
   "author": "",
