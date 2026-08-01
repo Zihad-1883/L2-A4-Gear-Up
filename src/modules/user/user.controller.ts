@@ -18,7 +18,8 @@ const registerUser = catchAsync(async (req: Request, res: Response, next: NextFu
 });
 
 const getMyProfile = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const result = await userService.getMyProfileFromDB(req.user?.id as string);
+    const accessToken = req.cookies.accessToken as string;
+    const result = await userService.getMyProfileFromDB(accessToken);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
