@@ -25,9 +25,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
 
 app.get("/", (req: Request, res: Response) => {
-  res.json({
+  res.status(200).json({
     success: true,
-    message: "Server is running fine on port 3000",
+    message: "GearUp API Server is running smoothly 🚀",
+    version: "1.0.0",
+    environment: process.env.NODE_ENV || "development",
+    timestamp: new Date().toISOString(),
     author: "Zihad",
   });
 });
